@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des livres</title>
+
+</head>
+
+<body>
+
+    <form id="bookForm">
+        <fieldset>
+            <label for="idl">ID du livre:</label>
+            <input type="text" id="idl" name="idl" required>
+
+            <label for="nom">Nom du livre:</label>
+            <input type="text" id="nom" name="nom" required>
+
+            <label for="nau">Nom d'auteur:</label>
+            <input type="text" id="nau" name="nau" required>
+
+            <label for="type">Type de livre:</label>
+            <input type="text" id="type" name="type" required>
+
+            <label for="prix">Prix:</label>
+            <input type="text" id="prix" name="prix" required>
+
+            <button type="button" id="ajouter">Ajouter le livre</button>
+        </fieldset>
+    </form>
+
+    <h2>Liste des livres</h2>
+    <table border="1" id="bookTable" width="100%" style="text-align: center;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom du livre</th>
+                <th>Nom de l'auteur</th>
+                <th>Type</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('ajouter').addEventListener('click', () => {
+            const id = document.getElementById('idl').value;
+            const nom = document.getElementById('nom').value;
+            const nau = document.getElementById('nau').value;
+            const type = document.getElementById('type').value;
+            const prix = document.getElementById('prix').value;
+
+            if (id && nom && nau && type && prix) {
+                const table = document.getElementById('bookTable').querySelector('tbody');
+                const newRow = document.createElement('tr');
+
+                const idCell = document.createElement('td');
+                idCell.textContent = id;
+                newRow.appendChild(idCell);
+
+                const nomCell = document.createElement('td');
+                nomCell.textContent = nom;
+                newRow.appendChild(nomCell);
+
+                const nauCell = document.createElement('td');
+                nauCell.textContent = nau;
+                newRow.appendChild(nauCell);
+
+                const typeCell = document.createElement('td');
+                typeCell.textContent = type;
+                newRow.appendChild(typeCell);
+
+                const prixCell = document.createElement('td');
+                prixCell.textContent = prix;
+                newRow.appendChild(prixCell);
+
+                const actionCell = document.createElement('td');
+                const modifyButton = document.createElement('button');
+                modifyButton.textContent = 'Modifier';
+                modifyButton.classList.add('action-buttons');
+                modifyButton.addEventListener('click', () => {
+                    const newNom = prompt('Entrez le nouveau nom du livre:', nomCell.textContent);
+                    const newAuteur = prompt('Entrez le nouveau nom de l\'auteur:', nauCell.textContent);
+                    const newType = prompt('Entrez le nouveau type de livre:', typeCell.textContent);
+                    const newPrix = prompt('Entrez le nouveau prix du livre:', prixCell.textContent);
+
+                    if (confirm('Êtes-vous sûr de vouloir modifier ce livre ?')) {
+                        if (newNom && newAuteur && newType && newPrix) {
+                            nomCell.textContent = newNom;
+                            nauCell.textContent = newAuteur;
+                            typeCell.textContent = newType;
+                            prixCell.textContent = newPrix;
+                        }
+                        else { alert('Veuillez fournir toutes les informations pour modifier le livre.'); }
+                    }
+                    else { alert("aucun modification n'est affecté!!"); }
+                });
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Supprimer';
+                deleteButton.classList.add('action-buttons');
+                deleteButton.addEventListener('click', () => {
+                    if (confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')) { table.removeChild(newRow); }
+                });
+
+                actionCell.appendChild(modifyButton);
+                actionCell.appendChild(deleteButton);
+                newRow.appendChild(actionCell);
+
+                table.appendChild(newRow);
+
+                document.getElementById('bookForm').reset();
+            } else {
+                alert('Veuillez remplir tous les champs !');
+            }
+        });
+    </script>
+</body>
+
+</html>
